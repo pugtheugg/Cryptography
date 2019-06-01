@@ -24,43 +24,46 @@ btn.grid(column=1, row=0)
 window.mainloop()
 '''
 
-Encrypt = False
-Decrypt = False
+Encrypt = False  #Define all the variables
 string = ""
 shift = 0
 
-
+#definging encrypt
+#supported_range is the range that the cipher supports
 def encrypt(string, shift):
-    cipher = ""
+    supported_range = ord("z") - ord(" ")
+    cipher = "" 
     for char in string:
-        if char == " ":
-            cipher = cipher + char
-        elif char.isupper():
-            cipher = cipher + chr((ord(char) + shift - 65) % 26 + 65)
-        else:
-            cipher = cipher + chr((ord(char) + shift - 97) % 26 + 97)
+        char_index = ord(char) - ord(" ")
+        cipher = cipher + chr(ord(" ") + (char_index + shift) % supported_range)
 
     return cipher
 
+#Ask the user if they want to encrypt of decrypt
+mode = input("Do you want to encript or decript?:")
 
-mode = input("Do you want to encript or decript?: ")
-
-if mode == "encript" or mode == "e":
-    encrypt(string, shift)
+#if e or encrypt Encrypt is true
+#if d or decrypt Encrypt is false
+#in neither then quit
+if mode == "encrypt" or mode == "e":
     Encrypt = True
-
-if mode == "d":
-    encrypt(string, shift)
-    Decrypt = True
-
-if Encrypt == True:
-    text = input("enter text: ")
-    shift_number = int(input("enter shift number: "))
-    print("original text: ", text)
-    print("after encryption: ", encrypt(text, shift_number))
-
-if Decrypt == True:
-    text = input("enter text: ")
+elif mode == "decrypt" or mode == "d":
+    Encrypt = False
+else:
+    print("Incorrect mode")
+    exit(1)
+#if encrypt is true
+#ask shift number
+if Encrypt:
+    text = input("enter text:")
+    shift_number = int(input("enter shift number:"))
+    print("original text:", text)
+    print("after encryption:", encrypt(text, shift_number))
+#else (encypt is false)
+#ask shift number
+#shift_number becomes negative
+else:
+    text = input("enter encrypted text: ")
     shift_number = int(input("enter shift number: "))
     shift_number = -shift_number
-    print("after decryption: ", encrypt(text, shift_number))
+    print("after decryption:", encrypt(text, shift_number))
